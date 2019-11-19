@@ -13,6 +13,15 @@ app.use('/public', express.static(process.cwd() + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.set('view engine','pug');
 
@@ -20,9 +29,6 @@ app.route('/')
   .get((req, res) => {    
     res.render(process.cwd() + '/views/pug/index.pug', { title:'Hello' , message:'Please login' });
   });
-
-
-
 
 
 app.listen(process.env.PORT || 3000, () => {
