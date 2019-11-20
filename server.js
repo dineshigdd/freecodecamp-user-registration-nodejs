@@ -45,7 +45,16 @@ app.route('/')
   });
 
 
-mongo.connect(process.env.DATABASE, (err , db))
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Listening on port " + process.env.PORT);
+mongo.connect(process.env.DATABASE, (err , db) => {
+  if(err) {
+    console.log('Database error: ' + err);
+  } else {
+    console.log('Successful database connection');
+
+    //serialization and app.listen
+        app.listen(process.env.PORT || 3000, () => {
+        console.log("Listening on port " + process.env.PORT);
+        });
+  }
 });
+
