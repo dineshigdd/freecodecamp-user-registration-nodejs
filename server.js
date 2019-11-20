@@ -65,7 +65,7 @@ mongo.connect(process.env.DATABASE, (err, db) => {
     
     
     
-    app.route('/', passport.authenticate('local'))
+    app.route('/', passport.authenticate('local',{ failureRedirect : '/'}))
       .get((req, res, ) => {    
         res.render(process.cwd() + '/views/pug/index.pug', { title:'Hello' , message:'Please login', showLogin: true });
       }); 
