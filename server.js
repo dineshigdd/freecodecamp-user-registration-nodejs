@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const ObjectID = require('mongodb').ObjectID;
 const mongo = require('mongodb').MongoClient;
+const LocalStrategy = require('passport-local');
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());      
   
+
+
 
 mongo.connect(process.env.DATABASE, (err, db) => {
   if(err) {
