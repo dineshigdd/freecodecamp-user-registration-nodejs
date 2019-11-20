@@ -5,8 +5,8 @@ const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session');
 const passport = require('passport');
-const ObjectID = require('mongodb').ObjectID;
 const mongo = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
 
 const app = express();
@@ -61,21 +61,28 @@ mongo.connect(process.env.DATABASE, (err, db) => {
         });
       }
       
-    ));    
+    ));      
     
     
-    
-    app.route('/', passport.authenticate('local',{ failureRedirect : '/'}))
-      .get((req, res, ) => {    
-        res.render(process.cwd() + '/views/pug/index.pug', { title:'Hello' , message:'Please login', showLogin: true });
+    app.route('/')
+      .get((req, res) => {    
+        res.render(process.cwd() + '/views/pug/index', { title:'Hello' , message:'Please login', showLogin: true });
       }); 
 
-     app.listen(process.env.PORT || 3000, () => {
+    app.route('/login') 
+       .post(passport.authenticate('local',{ failureRedirect: '/' } ),(req,res) =>{
+              res.redirect('/profile');
+    });              
+    
+    app.route('/profile')
+        .get((req,res) => {
+               res.render(process.cwd() + '/views/pug/profile');
+          });
+    
+    app.listen(process.env.PORT || 3000, () => {
           console.log("Listening on port " + process.env.PORT);
 
      });
-    
-   }
-});
+  }});
         
 
