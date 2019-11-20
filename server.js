@@ -28,8 +28,6 @@ app.use(passport.initialize());
 app.use(passport.session());      
   
 
-
-
 mongo.connect(process.env.DATABASE, (err, db) => {
   if(err) {
     console.log('Database error: ' + err);
@@ -68,8 +66,8 @@ mongo.connect(process.env.DATABASE, (err, db) => {
     
     
     
-    app.route('/')
-      .get((req, res) => {    
+    app.route('/', passport.authenticate('local'))
+      .get((req, res, ) => {    
         res.render(process.cwd() + '/views/pug/index.pug', { title:'Hello' , message:'Please login', showLogin: true });
       }); 
 
