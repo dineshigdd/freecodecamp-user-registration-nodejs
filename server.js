@@ -51,6 +51,23 @@ mongo.connect(process.env.DATABASE, (err, db) => {
     })
     
     
+    passport.use( new LocalStrategy (
+      
+      function( username , password , done ){
+        db.collection('users').findOne( { username: username }, function( err, user) {
+            console.log('User ' + username + ' attempted to log in.');
+            if(err){ return done(err); }
+            if(!user) { return done( null, false);}
+            if(password !== user.password){ return done(null, false);}
+            return done( null, user);
+        });
+      }
+      
+    ));
+    
+    
+    
+    
     app.route('/')
       .get((req, res) => {    
         res.render(process.cwd() + '/views/pug/index.pug', { title:'Hello' , message:'Please login' });
