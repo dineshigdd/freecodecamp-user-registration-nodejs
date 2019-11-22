@@ -78,7 +78,7 @@ mongo.connect(process.env.DATABASE, (err, db) => {
       if( req.isAuthenticated()){
         return next();
       }
-      res.redirect('/');
+        res.redirect('/');
     };
     
     app
