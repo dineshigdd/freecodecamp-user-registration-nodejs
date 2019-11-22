@@ -46,7 +46,7 @@ mongo.connect(process.env.DATABASE, (err, db) => {
               done(null, doc);
             }
         );
-    })
+    });
     
     
     passport.use( new LocalStrategy (
@@ -73,6 +73,16 @@ mongo.connect(process.env.DATABASE, (err, db) => {
        .post(passport.authenticate('local',{ failureRedirect: '/' } ),(req,res) =>{
               res.redirect('/profile');
     });              
+    
+    app.route('/logout')
+       .get(( req, res ) => {
+        req.logout();
+        res.redirect('/');
+    });
+    
+    app.use(( req, res, next) => {
+      res.status(404)
+    });
     
     function ensureAuthenticated(req,res,next){
       if( req.isAuthenticated()){
