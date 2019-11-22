@@ -81,8 +81,9 @@ mongo.connect(process.env.DATABASE, (err, db) => {
       res.redirect('/');
     };
     
-    app.route('/profile')
-        .get(ensureAuthenticated,(req,res) => {
+    app
+      .route('/profile')
+      .get(ensureAuthenticated,(req,res) => {
                res.render(process.cwd() + '/views/pug/profile');
     });
     
