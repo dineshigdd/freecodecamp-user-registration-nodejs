@@ -63,7 +63,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
       
     ));      
     
-  app.route('/register')
+    app.route('/register')
   .post((req, res, next) => {
     db.collection('users').findOne({ username: req.body.username }, function(err, user) {
       if (err) {
@@ -85,16 +85,17 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
         )
       }
     })
-   },
+  },
     passport.authenticate('local', { failureRedirect: '/' }),
     (req, res, next) => {
       res.redirect('/profile');
     }
   );
     
+  
     app.route('/')
       .get((req, res) => {    
-        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true , showRegistration: true });
+        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true ,showRegistration: true});
       }); 
 
     app.route('/login') 
