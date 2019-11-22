@@ -66,7 +66,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
     
     app.route('/')
       .get((req, res) => {    
-        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true });
+        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true , showRegistration: true });
       }); 
 
     app.route('/login') 
@@ -103,6 +103,8 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
           console.log("Listening on port " + process.env.PORT);
 
      });
+    
+   
   }});
         
 
