@@ -5,7 +5,7 @@ const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session');
 const passport = require('passport');
-const mongo = require('mongodb').MongoClient({ useUnifiedTopology: true });
+const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
 
@@ -28,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());      
   
 
-mongo.connect(process.env.DATABASE, (err, db) => {
+mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
   if(err) {
     console.log('Database error: ' + err);
   } else {
