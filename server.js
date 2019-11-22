@@ -5,7 +5,7 @@ const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session');
 const passport = require('passport');
-const mongo = require('mongodb').MongoClient;
+const mongo = require('mongodb').MongoClient({ useUnifiedTopology: true });
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
 
@@ -82,6 +82,8 @@ mongo.connect(process.env.DATABASE, (err, db) => {
     
     app.use(( req, res, next) => {
       res.status(404)
+        .type('text')
+        .send('Not Found');
     });
     
     function ensureAuthenticated(req,res,next){
