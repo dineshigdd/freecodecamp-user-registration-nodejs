@@ -63,29 +63,29 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
       
     ));      
     
-    app.route('/register')
-  .post((req, res, next) => {
-    db.collection('users').findOne({ username: req.body.username }, function(err, user) {
-      if (err) {
-        next(err);
-      } else if (user) {
-        res.redirect('/');
-      } else {
-        db.collection('users').insertOne({
-          username: req.body.username,
-          password: req.body.password
-        },
-          (err, doc) => {
-            if (err) {
-              res.redirect('/');
-            } else {
-              next(null, user);
+  app.route('/register')
+    .post((req, res, next) => {
+      db.collection('users').findOne({ username: req.body.username }, function(err, user) {
+        if (err) {
+          next(err);
+        } else if (user) {
+          res.redirect('/');
+        } else {
+          db.collection('users').insertOne({
+            username: req.body.username,
+            password: req.body.password
+          },
+            (err, doc) => {
+              if (err) {
+                res.redirect('/');
+              } else {
+                next(null, user);
+              }
             }
-          }
-        )
-      }
-    })
-  },
+          )
+        }
+      })
+    },
     passport.authenticate('local', { failureRedirect: '/' }),
     (req, res, next) => {
       res.redirect('/profile');
