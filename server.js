@@ -68,9 +68,9 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
       db.collection('users').findOne({ username: req.body.username }, function(err, user) {
         if (err) {
           next(err);
-        } else if (user) {          
+        } else if (user) {             
           res.redirect('/');
-        } else {          
+        } else {    
           db.collection('users').insertOne({
             username: req.body.username,
             password: req.body.password
