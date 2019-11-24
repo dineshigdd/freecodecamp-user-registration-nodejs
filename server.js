@@ -54,9 +54,9 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
       function( username , password , done ){
         db.collection('users').findOne( { username: username }, function( err, user) {
             console.log('User ' + username + ' attempted to log in.');
-            if(err){ return done(err); }
-            if(!user) { return done( null, false);}
-            if(password !== user.password){ return done(null, false);}
+            if(err){   console.log('1'); return done(err); }
+            if(!user) { console.log('2');return done( null, false);}
+            if(password !== user.password){ console.log('3');return done(null, false);}
             return done( null, user);
         });
       }
@@ -107,7 +107,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
     
     app.route('/logout')
        .get(( req, res ) => {
-        req.logout();
+          req.logout();
         res.redirect('/');
     });
     
