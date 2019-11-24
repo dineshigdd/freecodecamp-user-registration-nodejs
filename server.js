@@ -18,11 +18,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine','pug');
 
-// app.use(session({
-//   secret: process.env.SESSION_SECRET,
-//   resave: true,
-//   saveUninitialized: true,
-// }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());      
@@ -33,7 +33,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
     console.log('Database error: ' + err);
   } else {
     console.log('Successful database connection');
-
+    db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
     //serialization and app.listen
     passport.serializeUser((user, done) => {
         done( null, user._id);
