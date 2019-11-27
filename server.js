@@ -53,7 +53,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
       
       function( username , password , done ){
         db.collection('users').findOne( { username: username }, function( err, user) {
-            console.log('User ' + user + ' attempted to log in.');
+            console.log('User ' + username + ' attempted to log in.');
             if(err){ return done(err); }
             if(!user) { return done( null, false);}
             if(password !== user.password){ return done(null, false);}
