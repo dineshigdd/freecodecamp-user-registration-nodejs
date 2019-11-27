@@ -8,6 +8,7 @@ const passport = require('passport');
 const mongo = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const LocalStrategy = require('passport-local');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -98,7 +99,7 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
           console.log("the user exist")
           res.redirect('/');
         } else {    
-          console.log("Inserting...")
+          var hash = bcrypt.hashSync(req.body.password, 12);
           db.collection('users').insertOne({
             username: req.body.username,
             password: req.body.password
