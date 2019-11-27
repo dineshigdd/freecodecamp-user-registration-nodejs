@@ -59,11 +59,26 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
             if(password !== user.password){ return done(null, false);}
             return done( null, user);
         });
-      }
+      }    
+      
       
     ));      
     
-  app.route('/register')
+  
+    
+  
+  
+    app.route('/')
+      .get((req, res) => {    
+        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true ,showRegistration: true});
+      }); 
+
+    app.route('/login') 
+       .post(passport.authenticate('local',{ failureRedirect: '/' } ),(req,res) =>{
+              res.redirect('/profile');
+    });              
+    
+    app.route('/register')
     .post((req, res, next) => {  
       db.collection('users').findOne({ username: req.body.username }, function(err, user) {
         if (err) {
@@ -94,16 +109,6 @@ mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
     }
   );
     
-  
-    app.route('/')
-      .get((req, res) => {    
-        res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true ,showRegistration: true});
-      }); 
-
-    app.route('/login') 
-       .post(passport.authenticate('local',{ failureRedirect: '/' } ),(req,res) =>{
-              res.redirect('/profile');
-    });              
     
     app.route('/logout')
        .get(( req, res ) => {
