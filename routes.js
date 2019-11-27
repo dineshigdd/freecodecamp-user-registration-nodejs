@@ -3,7 +3,15 @@ const bcrypt = require('bcrypt');
 
 module.exports = function (app, db) {
   
-  app.route('/')
+ function ensureAuthenticated(req,res,next){
+      if( req.isAuthenticated()){
+        return next();
+      }
+        res.redirect('/');
+    };
+      
+  
+    app.route('/')
       .get((req, res) => {    
         res.render(process.cwd() + '/views/pug/index', { title:'Home page' , message:'Please login', showLogin: true ,showRegistration: true});
       }); 
@@ -57,29 +65,9 @@ module.exports = function (app, db) {
           req.logout();
         res.redirect('/');
     });
-  
-  
-  function ensureAuthenticated(req,res,next){
-      if( req.isAuthenticated()){
-        return next();
-      }
-        res.redirect('/');
-    };
+    
 
   
-  passport.use( new LocalStrategy (
-      
-      function( username , password , done ){
-        db.collection('users').findOne( { username: username }, function( err, user) {
-            console.log('User ' + username + ' attempted to log in.');
-            if(err){ return done(err); }
-            if(!user) { return done( null, false);}
-            if(!bcrypt.compareSync(password, user.password)){ return done(null, false);}
-            return done( null, user);
-        });
-      }    
-      
-      
-    ));  
+ 
 }
 

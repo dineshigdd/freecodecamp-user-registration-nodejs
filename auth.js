@@ -1,10 +1,8 @@
-app.use(passport.initialize());
-app.use(passport.session());   
-
 module.exports = function (app, db) {
 
   
   mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
+ 
   if(err) {
     console.log('Database error: ' + err);
   } else {
@@ -15,8 +13,6 @@ module.exports = function (app, db) {
         done( null, user._id);
     });
 
-    routes(app, db);
-    
     passport.deserializeUser((id, done) => {
         db.collection('users').findOne(
           {_id: new ObjectID(id)},
@@ -25,5 +21,6 @@ module.exports = function (app, db) {
             }
         );
     });
+    
     
 }
