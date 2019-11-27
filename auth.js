@@ -1,26 +1,23 @@
+const passport = require('passport');
+
 module.exports = function (app, db) {
-
+  app.use(passport.initialize());
+  app.use(passport.session());
   
-  mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
- 
-  if(err) {
-    console.log('Database error: ' + err);
-  } else {
-    console.log('Successful database connection');
-    db = db.db('users');//I add this line as Version 3 MongoDB connect differently where it gives the parent instead of the db.
-    //serialization and app.listen
-    passport.serializeUser((user, done) => {
-        done( null, user._id);
-    });
-
-    passport.deserializeUser((id, done) => {
-        db.collection('users').findOne(
-          {_id: new ObjectID(id)},
-            (err, doc) => {
-              done(null, doc);
-            }
-        );
-    });
+  const bcrypt = require('bcrypt');
     
-    
+     passport.use( new LocalStrategy (
+      
+      function( username , password , done ){
+        db.collection('users').findOne( { username: username }, function( err, user) {
+            console.log('User ' + username + ' attempted to log in.');
+            if(err){ return done(err); }
+            if(!user) { return done( null, false);}
+            if(!bcrypt.compareSync(password, user.password)){ return done(null, false);}
+            return done( null, user);
+        });
+      }    
+      
+      
+    ));   
 }
