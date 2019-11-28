@@ -1,8 +1,18 @@
+const session     = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ObjectID = require('mongodb').ObjectID;
 
 module.exports = function (app, db) {
+  
+  app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());   
   app.use(passport.initialize());
   app.use(passport.session());
   
@@ -20,6 +30,8 @@ module.exports = function (app, db) {
             }
         );
     });
+  
+  
   
      passport.use( new LocalStrategy (
       

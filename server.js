@@ -21,14 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine','pug');
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());      
+   
   
 
 mongo.connect(process.env.DATABASE, { useUnifiedTopology: true },(err, db) => {
