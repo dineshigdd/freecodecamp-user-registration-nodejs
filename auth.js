@@ -1,12 +1,26 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const ObjectID = require('mongodb').ObjectID;
 
 module.exports = function (app, db) {
   app.use(passport.initialize());
   app.use(passport.session());
   
   const bcrypt = require('bcrypt');
-    
+  
+  passport.serializeUser((user, done) => {
+        done( null, user._id);
+    });
+
+    passport.deserializeUser((id, done) => {
+        db.collection('users').findOne(
+          {_id: new ObjectID(id)},
+            (err, doc) => {
+              done(null, doc);
+            }
+        );
+    });
+  
      passport.use( new LocalStrategy (
       
       function( username , password , done ){
