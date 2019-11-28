@@ -1,4 +1,4 @@
-/*const passport = require('passport');
+const passport = require('passport');
 const bcrypt = require('bcrypt');
 
 module.exports = function (app, db) {
@@ -21,7 +21,17 @@ module.exports = function (app, db) {
               res.redirect('/profile');
     });              
     
-    app
+  
+    app.route('/auth/github')
+      .get(passport.authenticate('github'));
+  
+    app.route('/auth/github/callback')
+        .get(passport.authenticate('github', { failureRedirect: '/' }),(req, res) =>{
+             res.redirect('/profile');
+      });
+  
+  
+   app
       .route('/profile')
       .get(ensureAuthenticated,(req,res) => {
                res.render(process.cwd() + '/views/pug/profile', { username: req.user.username });
@@ -70,4 +80,3 @@ module.exports = function (app, db) {
  
 }
 
-*/

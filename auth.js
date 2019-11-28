@@ -1,4 +1,4 @@
-/*const session     = require('express-session');
+const session     = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const ObjectID = require('mongodb').ObjectID;
@@ -30,7 +30,6 @@ app.use(passport.session());
             }
         );
     });
-  */
   
   
      passport.use( new LocalStrategy (
